@@ -35,3 +35,18 @@ The primary objective is to identify the behavioral differences between casual r
 business objective: **profit maximization through the conversion of high-potential casual riders into annual members**.
 
 I’m focusing my analysis on the commercial drivers that turn casual riders into annual members. Rather than just observing data, I am identifying the specific behaviors that distinguish our most profitable segments. This allows me to provide the marketing team with a data-backed roadmap for high-ROI growth and help leadership make more informed strategic decisions.
+
+## Phase 2: Prepare & Process (Data Cleaning)
+
+To ensure the data was reliable and ready for analysis, the following cleaning and preparation steps were performed:
+
+### 1. Handling Missing Values
+- **Station Information:** A large number of trips had missing `start_station_name` and `end_station_name`. Instead of deleting these records, the missing values were filled with the label `"off-network"`. This preserves these trips for analysis and treats the lack of a station as a behavioral insight (i.e., dockless rides).
+- **End Coordinates:** A small number of trips (~5,500) were missing `end_lat` and `end_lng`. These rows were dropped as the ride distance could not be calculated and the volume was low enough not to impact overall trends.
+
+### 2. Correcting Data Integrity Issues & Handling Outliers
+- **Negative/Zero Duration Rides:** Trips with a duration of less than one minute (`ride_length_mins` < 1) were removed. These are considered data errors (`ended_at` before `started_at`) or "false starts" that do not represent a valid trip.
+- **Zero-Distance Rides:** Trips with a calculated distance of 0 km but a duration greater than one minute were kept. These are interpreted as valid "round-trip" journeys where the rider returned to the same starting station.
+- **Extreme Duration Outliers:** Trips with a duration longer than 24 hours (1,440 minutes) were removed. These are considered anomalies, likely representing stolen bikes or system errors, and do not reflect typical user behavior.
+
+After these steps, the dataset was clean and ready for the analysis phase, providing a more accurate foundation for comparing the behavior of casual riders and annual members.
